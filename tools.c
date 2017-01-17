@@ -497,7 +497,7 @@ static int key_build_path(char *ptr)
 	home = getenv("HOME");
 #endif
 	if (home == NULL) {
-          snprintf (ptr, 256, "ps3keys");
+          snprintf (ptr, 256, "ps4keys");
         } else {
 #ifdef WIN32
           snprintf(ptr, 256, "%s\\ps4keys\\", home);
