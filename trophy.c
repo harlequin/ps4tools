@@ -116,7 +116,8 @@ int main(int argc, char *argv[]) {
 	
 	printf("[+] Tophy Magic 0x%X\n", header->magic);
 	printf("[+] Tophy Version 0x%x\n", header->version);
-	printf("[+] Tophy File Size %x\n", header->file_size);
+	header->file_size = be64(trophy + 0x08);
+	printf("[+] Tophy File Size 0%X\n", header->file_size);
 	
 	header->entry_num = be32(trophy + 0x10);
 	
@@ -130,7 +131,7 @@ int main(int argc, char *argv[]) {
 		if (key_get_simple("trp-key-retail", key, 0x10) < 0)
 			fail("failed to load the ps4 trp retail key.");
 	} else {
-		if (key_get_simple("gpkg-key-debug", key, 0x10) < 0)
+		if (key_get_simple("trp-key-debug", key, 0x10) < 0)
 			fail("failed to load the ps4 trp debug key.");
 	}
 		
