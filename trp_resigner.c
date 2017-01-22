@@ -29,12 +29,16 @@
 #include "tools.h"
 
 u8 np[0x10];
+u8 np2[0x10];
 u8 iv[0x10] = {0};
+u8 new_civ[0x10] = {
+	0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F
+};
 u8 *ptr;
 u8 key[0x10]= {0};
 u8 key2[0x10]= {0};
 u8 org_key[0x10];
-u8 new_key[0x10];
+u8 new_key[0x10];	
 
 typedef struct {
  	u8 entry_name[32];
@@ -70,9 +74,9 @@ int main(int argc, char *argv[]) {
 	aes128cbc_enc(key, iv, np, 0x10, org_key);
 	
 	//new key
-	memset(np, 0x00, 0x10);
-	memcpy(np, "AAAA00000_00", 12);		
-	aes128cbc_enc(key2, iv, np, 0x10, new_key);
+	memset(np2, 0x00, 0x10);
+	memcpy(np2, "AAAA00000_00", 12);		
+	aes128cbc_enc(key2, iv, np2, 0x10, new_key);
 			
 	for(i = 0; i < num; i++) {	
 		pos = 0x60 + (i * 0x40);
@@ -90,14 +94,22 @@ int main(int argc, char *argv[]) {
 			memcpy(civ, ptr + e->entry_pos, 0x10);
 			
 			//decrypt
-			aes128cbc(org_key, civ, ptr + e->entry_pos + 0x10,  e->entry_len - 0x10, ptr + e->entry_pos + 0x10);						
+			aes128cbc(org_key, civ, ptr + e->entry_pos + 0x10,  e->entry_len - 0x10, ptr + e->entry_pos + 0x10);
+			
 			//encrypt with new key np			
-			aes128cbc_enc(new_key, civ, ptr + e->entry_pos + 0x10,  e->entry_len - 0x10, ptr + e->entry_pos + 0x10);				
+			aes128cbc_enc(new_key, new_civ, ptr + e->entry_pos + 0x10,  e->entry_len - 0x10, ptr + e->entry_pos + 0x10);
+
+			//copy new_civ to old civ
+			memcpy(ptr + e->entry_pos, new_civ , 0x10);
+			
+			//set new flag
+			e->flag = 0x02;
+			wbe32( ptr + pos + 0x20 + 0x08 + 0x08, e->flag);
 		}		
 	}
 	
-	//set header flag to development
-	wbe32(ptr + 0x18, 0x00000001);
+	//set header flag to development (not needed)
+	//wbe32(ptr + 0x18, 0x00000001);
 	
 	//calculate sha1 - set to zero, calc, store
 	memset(ptr + 0x1C, 0, 0x14);
