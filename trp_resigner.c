@@ -119,6 +119,8 @@ int main(int argc, char *argv[]) {
 	
 	//calculate sha1 - set to zero, calc, store
 	memset(ptr + 0x1C, 0, 0x14);
+	//set flag to 0 (debug)
+	memset(ptr + 0x31, '0', 1);
 	sha1(ptr, sz, ptr + 0x1C);	
 	
 	memcpy_to_file(argv[3], ptr , sz );
