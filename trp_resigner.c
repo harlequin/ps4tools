@@ -96,6 +96,12 @@ int main(int argc, char *argv[]) {
 			//decrypt
 			aes128cbc(org_key, civ, ptr + e->entry_pos + 0x10,  e->entry_len - 0x10, ptr + e->entry_pos + 0x10);
 			
+			//size of signature is 0x140, set it to x's
+			memset(ptr + e->entry_pos + 0x2D, 'x', 0x140);
+			
+			//print to screen to check validity
+			//printf("%s\n", ptr + e->entry_pos + 0x10);
+			
 			//encrypt with new key np			
 			aes128cbc_enc(new_key, new_civ, ptr + e->entry_pos + 0x10,  e->entry_len - 0x10, ptr + e->entry_pos + 0x10);
 
@@ -105,7 +111,7 @@ int main(int argc, char *argv[]) {
 			//set new flag
 			e->flag = 0x02;
 			wbe32( ptr + pos + 0x20 + 0x08 + 0x08, e->flag);
-		}		
+		}
 	}
 	
 	//set header flag to development (not needed)
