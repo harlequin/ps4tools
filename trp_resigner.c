@@ -99,7 +99,11 @@ int main(int argc, char *argv[]) {
 			//size of signature is 0x140, set it to x's
 			memset(ptr + e->entry_pos + 0x2D, 'x', 0x140);
 			
-			//print to screen to check validity
+			//magic is AAAA00000_00, set it
+			memset(ptr + e->entry_pos + 0x1B5, 'A', 0x4);
+			memset(ptr + e->entry_pos + 0x1B9, '0', 0x5);
+			
+			//print to screen to check validity, uncomment this if necessary
 			//printf("%s\n", ptr + e->entry_pos + 0x10);
 			
 			//encrypt with new key np			
