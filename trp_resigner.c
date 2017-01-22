@@ -32,6 +32,7 @@ u8 np[0x10];
 u8 iv[0x10] = {0};
 u8 *ptr;
 u8 key[0x10]= {0};
+u8 key2[0x10]= {0};
 u8 org_key[0x10];
 u8 new_key[0x10];
 
@@ -60,6 +61,9 @@ int main(int argc, char *argv[]) {
 	if (key_get_simple("trp-key-retail", key, 0x10) < 0)
 		fail("failed to load the ps4 trp retail key.");
 	
+	if (key_get_simple("trp-key-debug", key2, 0x10) < 0)
+		fail("failed to load the ps4 trp debug key.");
+	
 	//org key
 	memset(np, 0x00, 0x10);
 	memcpy(np, argv[2], 12);	
@@ -68,7 +72,7 @@ int main(int argc, char *argv[]) {
 	//new key
 	memset(np, 0x00, 0x10);
 	memcpy(np, "AAAA00000_00", 12);		
-	aes128cbc_enc(key, iv, np, 0x10, new_key);
+	aes128cbc_enc(key2, iv, np, 0x10, new_key);
 			
 	for(i = 0; i < num; i++) {	
 		pos = 0x60 + (i * 0x40);
