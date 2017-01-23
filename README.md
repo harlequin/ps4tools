@@ -6,6 +6,7 @@ My collection of tools for PS4 file handling.
 Credits
 -------
 flat_z (original Python scripts for PUP and PKG unpacking)
+zecoxao (updates and bug fixes)
 
 CHANGELOG
 --------
