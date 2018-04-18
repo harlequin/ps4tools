@@ -9,7 +9,15 @@
 #include <sys/stat.h>
 #include "sha2.h"
 
+#ifdef WIN32
+	#define MKDIR(x,y) mkdir(x)
+#else
+	#define MKDIR(x,y) mkdir(x,y)
+#endif
+
 #define PS4_PKG_MAGIC					0x544E437F // .CNT
+
+
 
 enum PS4_PKG_ENTRY_TYPES {
 	PS4_PKG_ENTRY_TYPE_DIGEST_TABLE = 0x0001,
@@ -157,7 +165,7 @@ char *build_path(const char *str, char c, const char *r)
     char *ptr = res;
     for (tmp = str; *tmp; tmp++) {
         if (*tmp == c) {
-		    mkdir(res, S_IRWXU);
+		    MKDIR(res, S_IRWXU);
             memcpy(ptr, r, rlen);
             ptr += rlen;
         } else {
@@ -476,7 +484,7 @@ int main(int argc, char *argv[])
 	char pkg_name[256];
 	memset(pkg_name, 0, 256);
 	memcpy(pkg_name, argv[1], 0x13);
-	mkdir(pkg_name, S_IRWXU);
+	MKDIR(pkg_name, S_IRWXU);
 
 	// Search through the entries for mapped file data and output it.
 	printf("Dumping internal PKG files:\n");

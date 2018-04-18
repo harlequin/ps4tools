@@ -12,6 +12,7 @@ zecoxao (updates and bug fixes)
 
 CrazyVoid (for genidx sources)
 
+zecoxao (for undat sources)
 
 CHANGELOG
 --------
@@ -23,3 +24,4 @@ CHANGELOG
 	- unpfs: unpacks pfs images
 	- trophy: unpack trophy files (incl. bruteforce for npcommid)
 	- genidx: generate PS4 IDX File
+	- undat: index.dat decrypter for ps4
