@@ -25,3 +25,4 @@ CHANGELOG
 	- trophy: unpack trophy files (incl. bruteforce for npcommid)
 	- genidx: generate PS4 IDX File
 	- undat: index.dat decrypter for ps4
+	- fpkg_renamer: Renames fpkg into following format $TITLE - ($TITLE_ID) ($VERSION).pkg
