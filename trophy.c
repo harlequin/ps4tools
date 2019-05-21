@@ -55,7 +55,7 @@ u8 iv[0x10] = {0};
 u8 ckey[0x10];
 u8 civ[0x10];
 trp_header *header;
-u8 *np_comm_id = NULL;
+u8 np_comm_id[0x10];
 
 
 u8 brutforce_npcommid (u8 *ptr, u64 len) {
@@ -63,10 +63,8 @@ u8 brutforce_npcommid (u8 *ptr, u64 len) {
 	u8 *out;
 	u8 *str;
 
-	printf("[!] Bruteforce attack started ... ");
+	// printf("[!] Bruteforce attack started ... ");
 		
-	np_comm_id = malloc(0x10);
-					
 	for ( i = 0; i < 99999; i++ ) {					
 		memset(np_comm_id, 0, 0x10);
 		sprintf(np_comm_id, "%s%05d_00", "NPWR", i);
